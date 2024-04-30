@@ -1,8 +1,10 @@
 #[cfg(test)]
 mod tests {
+    use std::hash::RandomState;
+
     use rusty_algoritms::{
         generate_list,
-        sorting::{bubble_sort::BubbleSort, quick_sort::QuickSort},
+        sorting::{bubble_sort::BubbleSort, merge_sort::MergeSort, quick_sort::QuickSort},
     };
 
     #[test]
@@ -28,6 +30,17 @@ mod tests {
             let mut random_list = generate_list(1000);
             let mut random_list_2 = random_list.clone();
             random_list.quick_sort();
+            random_list_2.sort();
+            assert_eq!(random_list, random_list_2);
+        }
+    }
+
+    #[test]
+    fn merge_sort_test10x1000() {
+        for _ in 0..10 {
+            let mut random_list = generate_list(1000);
+            let mut random_list_2 = random_list.clone();
+            random_list.merge_sort();
             random_list_2.sort();
             assert_eq!(random_list, random_list_2);
         }
