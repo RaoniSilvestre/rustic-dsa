@@ -15,7 +15,6 @@ where
 
 fn sorting<T: PartialOrd + Copy + Display>(lista: &mut Vec<T>, left: usize, right: usize) {
     if left < right {
-        print_state(lista);
         let index_pivot = partition(lista, left, right);
         sorting(lista, left, index_pivot);
         sorting(lista, index_pivot + 1, right);
@@ -27,14 +26,11 @@ fn partition<T: PartialOrd + Copy>(lista: &mut Vec<T>, mut left: usize, mut righ
     left = left + 1;
 
     while right >= left {
-        println!("left < right : {left} {right}");
         while left < lista.len() && lista[left] < lista[pivot] {
-            println!("left++");
             left = left + 1;
         }
 
         while lista[right] > lista[pivot] {
-            println!("right--; {}", right);
             if right == 0 {
                 break;
             }
@@ -43,7 +39,6 @@ fn partition<T: PartialOrd + Copy>(lista: &mut Vec<T>, mut left: usize, mut righ
 
         if right >= left {
             lista.swap(left, right);
-            left += 1;
             if right != 0 {
                 right -= 1;
             }
@@ -53,11 +48,4 @@ fn partition<T: PartialOrd + Copy>(lista: &mut Vec<T>, mut left: usize, mut righ
     lista.swap(pivot, right);
 
     right
-}
-
-fn print_state<T: Display>(lista: &Vec<T>) {
-    for elem in lista {
-        print!("{} ", elem)
-    }
-    println!("")
 }
