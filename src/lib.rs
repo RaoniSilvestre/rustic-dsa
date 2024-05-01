@@ -30,4 +30,3 @@ where
 
 pub mod running;
 pub mod sorting;
-pub mod structs;
