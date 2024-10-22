@@ -1,19 +1,16 @@
-use std::fmt::Display;
+use super::OrderedCopy;
 
-pub trait QuickSort<T: PartialOrd + Copy> {
+pub trait QuickSort<T: OrderedCopy> {
     fn quick_sort(&mut self);
 }
 
-impl<T> QuickSort<T> for Vec<T>
-where
-    T: PartialOrd + Copy + Display,
-{
+impl<T: OrderedCopy> QuickSort<T> for Vec<T> {
     fn quick_sort(&mut self) {
         sorting(self, 0, self.len() - 1)
     }
 }
 
-fn sorting<T: PartialOrd + Copy + Display>(lista: &mut Vec<T>, left: usize, right: usize) {
+fn sorting<T: OrderedCopy>(lista: &mut Vec<T>, left: usize, right: usize) {
     if left < right {
         let index_pivot = partition(lista, left, right);
         sorting(lista, left, index_pivot);
@@ -21,22 +18,19 @@ fn sorting<T: PartialOrd + Copy + Display>(lista: &mut Vec<T>, left: usize, righ
     }
 }
 
-fn partition<T: PartialOrd + Copy>(lista: &mut Vec<T>, mut left: usize, mut right: usize) -> usize {
+fn partition<T: OrderedCopy>(lista: &mut Vec<T>, mut left: usize, mut right: usize) -> usize {
     let pivot = left;
-    left = left + 1;
-
-    while right >= left {
+    left += 1;
+    while left <= right {
         while left < lista.len() && lista[left] < lista[pivot] {
-            left = left + 1;
+            left += 1;
         }
-
         while lista[right] > lista[pivot] {
             if right == 0 {
                 break;
             }
-            right = right - 1;
+            right -= 1;
         }
-
         if right >= left {
             lista.swap(left, right);
             if right != 0 {
@@ -44,8 +38,6 @@ fn partition<T: PartialOrd + Copy>(lista: &mut Vec<T>, mut left: usize, mut righ
             }
         }
     }
-
     lista.swap(pivot, right);
-
     right
 }

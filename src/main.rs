@@ -5,7 +5,8 @@ fn main() {
     std::io::stdin().read_line(&mut input).unwrap();
     let list_lenght: usize = input.trim().parse().unwrap();
 
-    merge_run(list_lenght);
-    quick_run(list_lenght);
-    bubble_run(list_lenght)
+    merge::merge_run(list_lenght);
+    quick::quick_run(list_lenght);
+    bubble::iterative_bubble_run(list_lenght);
+    bubble::recursive_bubble_run(list_lenght);
 }

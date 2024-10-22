@@ -1,17 +1,16 @@
-pub trait MergeSort<T: PartialOrd + Copy> {
+use super::OrderedCopy;
+
+pub trait MergeSort<T: OrderedCopy> {
     fn merge_sort(&mut self);
 }
 
-impl<T> MergeSort<T> for Vec<T>
-where
-    T: PartialOrd + Copy,
-{
+impl<T: OrderedCopy> MergeSort<T> for Vec<T> {
     fn merge_sort(&mut self) {
         *self = merge_sorting(self);
     }
 }
 
-fn merge_sorting<T: PartialOrd + Copy>(arr: &mut Vec<T>) -> Vec<T> {
+fn merge_sorting<T: OrderedCopy>(arr: &mut Vec<T>) -> Vec<T> {
     if arr.len() <= 1 {
         return arr.to_vec();
     }
@@ -24,7 +23,7 @@ fn merge_sorting<T: PartialOrd + Copy>(arr: &mut Vec<T>) -> Vec<T> {
     merge(left, right)
 }
 
-fn merge<T: PartialOrd + Copy>(arr_1: Vec<T>, arr_2: Vec<T>) -> Vec<T> {
+fn merge<T: OrderedCopy>(arr_1: Vec<T>, arr_2: Vec<T>) -> Vec<T> {
     let mut i = 0;
     let mut j = 0;
 
