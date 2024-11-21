@@ -30,8 +30,10 @@ cd rusty-algorithms
 Execute o programa:
 
 ```bash
-cargo run
+cargo run --release
 ```
+Use a flag `--release` pq se não demora muito tempo pra terminar a rodar os códigos*
+
 
 Execute os testes:
 
