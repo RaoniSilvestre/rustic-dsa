@@ -1,12 +1,19 @@
-use rand::Rng;
+use std::{
+    fs::File,
+    io::{BufRead, BufReader, Result},
+};
 
-pub fn generate_list(n: usize) -> Vec<i32> {
-    let mut list: Vec<i32> = Vec::new();
-    let mut rng = rand::thread_rng();
-    for _ in 0..n {
-        list.push(rng.gen_range(0..(n as i32)));
-    }
-    list
+pub fn read_numbers_from_file(file_path: &str) -> Result<Vec<i32>> {
+    let file = File::open(file_path)?;
+    let reader = BufReader::new(file);
+
+    let numbers: Vec<i32> = reader
+        .lines()
+        .filter_map(|line| line.ok())
+        .filter_map(|line| line.trim().parse::<i32>().ok())
+        .collect();
+
+    Ok(numbers)
 }
 
 pub trait IsSorted<T: PartialOrd> {

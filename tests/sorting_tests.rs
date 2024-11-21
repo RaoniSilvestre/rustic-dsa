@@ -2,7 +2,9 @@
 mod tests {
     use rusty_algoritms::{
         generate_list,
-        sorting::{bubble_sort::IterativeBubbleSort, merge_sort::MergeSort, quick_sort::QuickSort},
+        sorting::{
+            bubble_sort::IterativeBubbleSort, merge_sort::RecursiveMergeSort, quick_sort::QuickSort,
+        },
     };
 
     #[test]

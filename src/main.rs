@@ -1,12 +1,14 @@
-use rusty_algoritms::running::*;
+use rusty_algoritms::{read_numbers_from_file, running::*};
 
 fn main() {
-    let mut input = String::new();
-    std::io::stdin().read_line(&mut input).unwrap();
-    let list_lenght: usize = input.trim().parse().unwrap();
+    let files = vec![
+        "./data/input/file_1000.txt",
+        "./data/input/file_10000.txt",
+        "./data/input/file_100000.txt",
+    ];
 
-    merge::merge_run(list_lenght);
-    quick::quick_run(list_lenght);
-    bubble::iterative_bubble_run(list_lenght);
-    bubble::recursive_bubble_run(list_lenght);
+    for file in files {
+        let array = read_numbers_from_file(file).expect("Não foi possível ler arquivo");
+        run_array(array);
+    }
 }
