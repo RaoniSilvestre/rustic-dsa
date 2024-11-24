@@ -1,4 +1,4 @@
-use crate::sorting::OrderedCopy;
+use crate::algorithms::sorting::OrderedCopy;
 
 /// Ordena um vetor em ordem crescente usando o algoritmo Bubble Sort iterativo.
 ///
@@ -13,6 +13,8 @@ use crate::sorting::OrderedCopy;
 ///
 /// # Exemplo de Uso
 /// ```
+/// use rusty_algoritms::algorithms::sorting::bubble::iterative::iterative_bubble_sort;
+/// use rusty_algoritms::running::run_array;
 /// let mut vetor = vec![5, 3, 8, 4, 2];
 /// iterative_bubble_sort(&mut vetor);
 /// println!("{:?}", vetor); // Saída: [2, 3, 4, 5, 8]

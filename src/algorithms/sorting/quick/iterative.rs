@@ -1,4 +1,4 @@
-use crate::sorting::OrderedCopy;
+use crate::algorithms::sorting::OrderedCopy;
 
 /// Ordena um vetor em ordem crescente usando o algoritmo Quick Sort iterativo.
 ///
@@ -12,6 +12,7 @@ use crate::sorting::OrderedCopy;
 ///
 /// # Exemplo de Uso
 /// ```
+/// use rusty_algoritms::algorithms::sorting::quick::iterative::iterative_quick_sort;
 /// let mut vetor = vec![5, 3, 8, 4, 2];
 /// iterative_quick_sort(&mut vetor);
 /// println!("{:?}", vetor); // Saída: [2, 3, 4, 5, 8]

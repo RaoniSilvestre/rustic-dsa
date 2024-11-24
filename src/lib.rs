@@ -16,24 +16,5 @@ pub fn read_numbers_from_file(file_path: &str) -> Result<Vec<i32>> {
     Ok(numbers)
 }
 
-pub trait IsSorted<T: PartialOrd> {
-    fn is_sortted(&self) -> bool;
-}
-
-impl<T> IsSorted<T> for Vec<T>
-where
-    T: PartialOrd,
-{
-    fn is_sortted(&self) -> bool {
-        for i in 1..self.len() {
-            if self[i - 1] > self[i] {
-                return false;
-            }
-        }
-
-        true
-    }
-}
-
+pub mod algorithms;
 pub mod running;
-pub mod sorting;

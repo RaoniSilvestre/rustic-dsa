@@ -29,6 +29,7 @@ use rand::Rng;
 /// Caso a pasta ./data/input não exista, isso aqui não vai funcionar visto que o código não tenta
 /// criar a pasta, apenas criar um arquivo dentro dessa pasta.
 ///
+
 fn main() {
     let dir_path = "./data/input/";
 
@@ -47,13 +48,4 @@ fn main() {
 
         println!("Arquivo {} criado com sucesso!", file_names[i]);
     }
-}
-
-pub fn generate_list(n: usize) -> Vec<i32> {
-    let mut list: Vec<i32> = Vec::new();
-    let mut rng = rand::thread_rng();
-    for _ in 0..n {
-        list.push(rng.gen_range(0..1000));
-    }
-    list
 }

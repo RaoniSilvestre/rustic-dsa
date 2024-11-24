@@ -1,13 +1,11 @@
 use std::{fmt::Display, fs::File, io::Write, path::Path, time::Instant};
 
-use crate::sorting::{
+use crate::algorithms::sorting::{
     bubble::{iterative::iterative_bubble_sort, recursive::recursive_bubble_sort},
     merge::{iterative::iterative_merge_sort, recursive::recursive_merge_sort},
     quick::{iterative::iterative_quick_sort, recursive::recursive_quick_sort},
-    OrderedCopy,
+    OrderedCopy, SortFunction,
 };
-
-type SortFunction<T> = fn(&mut Vec<T>);
 
 /// Executa uma função de ordenação em um vetor e mede o tempo necessário para completá-la.
 ///
@@ -30,7 +28,9 @@ type SortFunction<T> = fn(&mut Vec<T>);
 ///
 /// # Exemplo
 /// ```
-/// run(vec![3, 1, 4, 1, 5], some_sort_function, String::from("SORT_NAME"));
+/// use rusty_algoritms::algorithms::sorting::merge::iterative::iterative_merge_sort;
+/// use rusty_algoritms::running::run;
+/// run(vec![3, 1, 4, 1, 5], iterative_merge_sort, String::from("Merge Sort"));
 /// ```
 pub fn run<T, F>(mut array: Vec<T>, mut sort_function: F, function_name: String)
 where
@@ -67,6 +67,8 @@ where
 ///
 /// # Exemplo
 /// ```
+/// use rusty_algoritms::running::run;
+/// use rusty_algoritms::running::run_array;
 /// run_array(vec![10, 7, 3, 2, 1]);
 /// ```
 ///

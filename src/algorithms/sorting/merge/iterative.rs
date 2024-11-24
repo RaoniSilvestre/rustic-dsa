@@ -1,4 +1,4 @@
-use crate::sorting::OrderedCopy;
+use crate::algorithms::sorting::OrderedCopy;
 
 /// Ordena um vetor em ordem crescente usando o algoritmo Merge Sort iterativo.
 ///
@@ -13,6 +13,7 @@ use crate::sorting::OrderedCopy;
 ///
 /// # Exemplo de Uso
 /// ```
+/// use rusty_algoritms::algorithms::sorting::merge::iterative::iterative_merge_sort;
 /// let mut vetor = vec![5, 3, 8, 4, 2];
 /// iterative_merge_sort(&mut vetor);
 /// println!("{:?}", vetor); // Saída: [2, 3, 4, 5, 8]
