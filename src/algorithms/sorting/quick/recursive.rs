@@ -11,7 +11,7 @@ use crate::algorithms::sorting::OrderedCopy;
 ///
 /// # Exemplo de Uso
 /// ```
-/// use rusty_algoritms::algorithms::sorting::quick::recursive::recursive_quick_sort;
+/// use rustic_dsa::algorithms::sorting::quick::recursive::recursive_quick_sort;
 /// let mut vetor = vec![5, 3, 8, 4, 2];
 /// recursive_quick_sort(&mut vetor);
 /// println!("{:?}", vetor); // Saída: [2, 3, 4, 5, 8]

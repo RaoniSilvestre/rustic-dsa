@@ -28,8 +28,8 @@ use crate::algorithms::sorting::{
 ///
 /// # Exemplo
 /// ```
-/// use rusty_algoritms::algorithms::sorting::merge::iterative::iterative_merge_sort;
-/// use rusty_algoritms::running::run;
+/// use rustic_dsa::algorithms::sorting::merge::iterative::iterative_merge_sort;
+/// use rustic_dsa::running::run;
 /// run(vec![3, 1, 4, 1, 5], iterative_merge_sort, String::from("Merge Sort"));
 /// ```
 pub fn run<T, F>(mut array: Vec<T>, mut sort_function: F, function_name: String)
@@ -67,8 +67,7 @@ where
 ///
 /// # Exemplo
 /// ```
-/// use rusty_algoritms::running::run;
-/// use rusty_algoritms::running::run_array;
+/// use rustic_dsa::running::run_array;
 /// run_array(vec![10, 7, 3, 2, 1]);
 /// ```
 ///

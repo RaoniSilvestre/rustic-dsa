@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod sorting_tests {
 
-    use rusty_algoritms::algorithms::generate_list;
-    use rusty_algoritms::algorithms::sorting::{
+    use rustic_dsa::algorithms::generate_list;
+    use rustic_dsa::algorithms::sorting::{
         bubble::{iterative::iterative_bubble_sort, recursive::recursive_bubble_sort},
         merge::{iterative::iterative_merge_sort, recursive::recursive_merge_sort},
         quick::{iterative::iterative_quick_sort, recursive::recursive_quick_sort},

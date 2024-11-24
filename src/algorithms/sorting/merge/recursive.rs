@@ -12,7 +12,7 @@ use crate::algorithms::sorting::OrderedCopy;
 ///
 /// # Exemplo de Uso
 /// ```
-/// use rusty_algoritms::algorithms::sorting::merge::recursive::recursive_merge_sort;
+/// use rustic_dsa::algorithms::sorting::merge::recursive::recursive_merge_sort;
 /// let mut vetor = vec![5, 3, 8, 4, 2];
 /// recursive_merge_sort(&mut vetor);
 /// println!("{:?}", vetor); // Saída: [2, 3, 4, 5, 8]

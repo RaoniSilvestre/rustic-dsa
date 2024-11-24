@@ -12,7 +12,7 @@ use crate::algorithms::sorting::OrderedCopy;
 ///
 /// # Exemplo de Uso
 /// ```
-/// use rusty_algoritms::algorithms::sorting::bubble::recursive::recursive_bubble_sort;
+/// use rustic_dsa::algorithms::sorting::bubble::recursive::recursive_bubble_sort;
 /// let mut vetor = vec![5, 3, 8, 4, 2];
 /// recursive_bubble_sort(&mut vetor);
 /// println!("{:?}", vetor); // Saída: [2, 3, 4, 5, 8]

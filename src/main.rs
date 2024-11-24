@@ -1,4 +1,4 @@
-use rusty_algoritms::{read_numbers_from_file, running::*};
+use rustic_dsa::{read_numbers_from_file, running::*};
 
 fn main() {
     let files = vec![
