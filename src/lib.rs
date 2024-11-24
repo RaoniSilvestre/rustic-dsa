@@ -17,4 +17,5 @@ pub fn read_numbers_from_file(file_path: &str) -> Result<Vec<i32>> {
 }
 
 pub mod algorithms;
+pub mod data_structures;
 pub mod running;
