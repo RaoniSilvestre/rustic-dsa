@@ -1,16 +1,8 @@
-///////////////////////////////////////////
-// Queue definition
-
-use std::{
-    cell::RefCell,
-    fmt::{Debug, Display},
-    ops::Deref,
-    rc::Rc,
-};
+use std::{cell::RefCell, fmt::Debug, ops::Deref, rc::Rc};
 
 // Why use Rc<RefCell<T>>:
 // https://doc.rust-lang.org/book/ch15-05-interior-mutability.html
-type QueueLink<T> = Option<Rc<RefCell<QueueNode<T>>>>;
+type QueueLink<T> = Option<Rc<RefCell<Node<T>>>>;
 
 #[derive(Debug, Clone, Default)]
 pub struct Queue<T> {
@@ -19,14 +11,14 @@ pub struct Queue<T> {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-struct QueueNode<T> {
+struct Node<T> {
     value: T,
     next: QueueLink<T>,
 }
 
-impl<T: Copy + Clone + PartialEq + std::fmt::Debug> Queue<T> {
-    pub fn enqueue(&mut self, enqueued_value: T) {
-        let enqueued_node = new_link(enqueued_value);
+impl<T: Copy + Clone + PartialEq> Queue<T> {
+    pub fn push(&mut self, enqueued_value: T) {
+        let enqueued_node = Node::new_link(enqueued_value);
 
         match &self.rear {
             None => {
@@ -40,7 +32,7 @@ impl<T: Copy + Clone + PartialEq + std::fmt::Debug> Queue<T> {
         }
     }
 
-    pub fn dequeue(&mut self) {
+    pub fn pop(&mut self) {
         match &self.front {
             Some(node) => {
                 let first_node = node.clone();
@@ -50,47 +42,31 @@ impl<T: Copy + Clone + PartialEq + std::fmt::Debug> Queue<T> {
         }
     }
 
+    pub fn front(&self) -> Option<T> {
+        self.front
+            .as_ref()
+            .and_then(|node| Some(node.borrow().value))
+    }
+
+    pub fn back(&self) -> Option<T> {
+        self.rear
+            .as_ref()
+            .and_then(|node| Some(node.borrow().value))
+    }
+
     pub fn is_empty(&self) -> bool {
         self.front.is_none()
     }
 }
 
-impl<T: Copy> QueueNode<T> {
-    fn new(value: T, next: QueueLink<T>) -> QueueNode<T> {
-        QueueNode { value, next }
+impl<T: Copy> Node<T> {
+    fn new(value: T, next: QueueLink<T>) -> Node<T> {
+        Node { value, next }
+    }
+
+    fn new_link(value: T) -> QueueLink<T> {
+        Some(Rc::new(RefCell::new(Node::new(value, None))))
     }
 }
 
-fn new_link<T: Copy>(value: T) -> QueueLink<T> {
-    Some(Rc::new(RefCell::new(QueueNode::new(value, None))))
-}
-
-impl<T: Display + Debug> Display for Queue<T> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut temp = self.front.clone();
-
-        write!(f, "[")?;
-        loop {
-            match temp {
-                Some(ref node) => {
-                    let ref_cell_node = node.clone();
-                    let next_node = &ref_cell_node.borrow().next;
-                    let node_value = &ref_cell_node.borrow().value;
-
-                    match next_node {
-                        None => write!(f, "{:?}", node_value)?,
-                        Some(_) => write!(f, "{:?}, ", node_value)?,
-                    }
-
-                    temp = next_node.clone();
-                }
-                None => {
-                    write!(f, "]")?;
-                    break;
-                }
-            }
-        }
-
-        Ok(())
-    }
-}
+mod display;

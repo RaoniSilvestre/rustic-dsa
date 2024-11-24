@@ -1,16 +1,29 @@
-use rustic_dsa::data_structures::bin_tree::BinTree;
+use rustic_dsa::data_structures::queue::Queue;
 
 fn main() {
-    let mut tree: BinTree<i32> = BinTree::default();
+    let mut q: Queue<i32> = Queue::default();
 
-    tree.insert(5);
-    tree.insert(2);
-    tree.insert(8);
-    tree.insert(3);
-    tree.insert(9);
-    tree.insert(7);
-
-    println!("{tree}");
-    tree.remove(8);
-    println!("{tree}")
+    println!("{q}");
+    q.push(3);
+    println!("{q}");
+    q.push(2);
+    println!("{q}");
+    q.push(1);
+    println!("{q}");
+    q.push(8);
+    println!("{q}");
+    q.push(9);
+    println!("{q}");
+    q.push(6);
+    println!("{q}");
+    q.pop();
+    println!("{q}");
+    q.pop();
+    println!("{q}");
+    q.pop();
+    println!("{q}");
+    q.pop();
+    println!("{q}");
+    q.pop();
+    println!("{q}");
 }
