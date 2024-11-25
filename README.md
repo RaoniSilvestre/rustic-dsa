@@ -1,48 +1,61 @@
-# Rusty Algorithms
+# Algoritmos e Estruturas de Dados em Rust
 
-Rusty Algorithms é um projeto em Rust que implementa e demonstra algoritmos clássicos de ordenação e outros processos computacionais. O projeto tem foco em modularidade e organização de código, permitindo fácil compreensão e expansão.
+Este repositório contém implementações de estruturas de dados e algoritmos de programação em Rust, com o objetivo de estudo e aprendizado sobre esses conceitos. O foco principal do repo é entender como as estruturas de dados e os algoritmos funcionam e como implementá-los.
 
-## Algoritmos Implementados
+## Implementações
 
-### Ordenação
+- Algoritmos de ordenação:
+    - Bubble sort
+    - Merge sort
+    - Quick sort
 
-1. **Bubble Sort (Ordenação por Bolha)**
-   - Implementação iterativa
-   - Implementação recursiva
+- Estruturas de dados:
+    - Árvore binária de busca
+    - Heap
+    - Fila
+    - Pilha
 
-2. **Merge Sort (Ordenação por Intercalação)**
-   - Implementação iterativa
-   - Implementação recursiva
+## Tecnologias utilizadas
 
-3. **Quick Sort (Ordenação Rápida)**
-   - Implementação iterativa
-   - Implementação recursiva
+rust.
 
-## Como Executar
+## Como usar
 
-1. Clone o repositório:
+### 0. Instale o rust
 
-```bash
-git clone https://github.com/seu-usuario/rusty-algorithms.git
-cd rusty-algorithms
-```
+https://www.rust-lang.org/tools/install
 
-Execute o programa:
+### 1. Clone o repositório
 
 ```bash
-cargo run --release
+git clone https://github.com/RaoniSilvestre/rustic-dsa
+cd rustic-dsa
 ```
-Use a flag `--release` pq se não demora muito tempo pra terminar a rodar os códigos*
 
+### 2. Rode o projeto
 
-Execute os testes:
+O projeto contém testes unitários para garantir a validade das estruturas implementadas, então para rodar o projeto é preciso usar a ferramenta de testes do rust:
+
 
 ```bash
 cargo test
 ```
 
-## Como Contribuir
+Todos os testes estão localizados na pasta `tests/`.
 
-Faça um forkzinho e coloque sua alteração!!
+## Contribuição
+
+Contribuições são bem vindas! Para contribuir, só precisa implementar uma estrutura/algoritmo e criar os testes para o mesmo. Segue o passo a passo:
+
+1. Faça um fork do repositório
+2. Crie uma branch para sua estrutura/algoritmo(`git checkout -b meu-algoritmo-favorito`).
+3. Faça suas implementações e dê commit.
+4. Adicione testes unitários seguindo o padrão existente.
+5. Envie um PR!.
+
+
+## Licença
+
+Este projeto está disponível para uso e contribuição livre. Não há restrições quanto ao uso, sinta-se à vontade para utilizar, modificar e compartilhar!
 
 
