@@ -7,3 +7,15 @@ edition = "2021"
 
 [dependencies]
 rand = "0.8.5"
+
+[dev-dependencies]
+criterion = { version = "0.4.0", features = ["html_reports"] }
+
+
+[[bench]]
+name = "sorting"
+harness = false
+
+[[bin]]
+name = "generator"
+path = "./src/generator.rs"

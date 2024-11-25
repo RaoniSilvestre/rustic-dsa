@@ -1,8 +1,7 @@
+use rustic_dsa::algorithms::generate_list;
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
-
-use rand::Rng;
 
 /// Gera arquivos de texto com listas de números aleatórios e os salva no diretório `./data/input/`.
 ///
