@@ -1,24 +1,17 @@
 use std::fmt::{self, Display};
 
-use super::{BinTree, Node, OptionNode};
+use super::BinaryTree;
 
-impl<T: fmt::Display> fmt::Display for BinTree<T> {
+impl<T: Display> Display for BinaryTree<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "[ ")?;
-        Node::print(&self.root, f)?;
-        write!(f, "]")?;
-
-        Ok(())
-    }
-}
-
-impl<T: Display> Node<T> {
-    pub fn print(node_opt: &OptionNode<T>, f: &mut fmt::Formatter) -> fmt::Result {
-        if let Some(node) = node_opt {
-            Self::print(&node.left, f)?;
-            write!(f, "{} ", node.value)?;
-            Self::print(&node.right, f)?;
+        if let Self::Some { value, left, right } = self {
+            write!(f, "{}", *left)?;
+            write!(f, "{} ", value)?;
+            write!(f, "{}", *right)?;
         }
+
+        write!(f, "]")?;
 
         Ok(())
     }

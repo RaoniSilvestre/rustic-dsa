@@ -1,10 +1,10 @@
 #[cfg(test)]
 mod binary_tree_tests {
-    use rustic_dsa::data_structures::bin_tree::*;
+    use rustic_dsa::data_structures::bin_tree::BinaryTree;
 
     #[test]
     fn test_insert() {
-        let mut root = BinTree::default();
+        let mut root = BinaryTree::default();
 
         root.insert(5);
         root.insert(10);
@@ -25,7 +25,7 @@ mod binary_tree_tests {
 
     #[test]
     fn test_search_existing_node() {
-        let mut root = BinTree::default();
+        let mut root = BinaryTree::default();
         root.insert(5);
         root.insert(10);
         root.insert(15);
@@ -37,7 +37,7 @@ mod binary_tree_tests {
 
     #[test]
     fn test_search_non_existing_node() {
-        let mut root = BinTree::default();
+        let mut root = BinaryTree::default();
         root.insert(5);
         root.insert(10);
         root.insert(15);
@@ -48,7 +48,7 @@ mod binary_tree_tests {
 
     #[test]
     fn test_remove_leaf() {
-        let mut root = BinTree::default();
+        let mut root = BinaryTree::default();
         root.insert(5);
         root.insert(10);
         root.insert(15);
@@ -59,7 +59,7 @@ mod binary_tree_tests {
 
     #[test]
     fn test_remove_node_with_one_child() {
-        let mut root = BinTree::default();
+        let mut root = BinaryTree::default();
         root.insert(5);
         root.insert(15);
         root.insert(10);
@@ -71,7 +71,7 @@ mod binary_tree_tests {
 
     #[test]
     fn test_remove_node_with_two_children() {
-        let mut root = BinTree::default();
+        let mut root = BinaryTree::default();
         root.insert(5);
         root.insert(15);
         root.insert(12);
@@ -85,7 +85,7 @@ mod binary_tree_tests {
 
     #[test]
     fn test_remove_root_with_one_child() {
-        let mut root = BinTree::default();
+        let mut root = BinaryTree::default();
         root.insert(15);
         root.insert(10);
 
@@ -97,15 +97,17 @@ mod binary_tree_tests {
 
     #[test]
     fn test_remove_root_with_no_children() {
-        let root = BinTree::default();
+        let root = BinaryTree::default();
 
         assert!(!root.search(10));
     }
 
     #[test]
     fn test_remove_non_existing_node() {
-        let mut root = BinTree::default();
+        let mut root = BinaryTree::default();
         root.insert(5);
         root.insert(15);
+
+        root.remove(2);
     }
 }

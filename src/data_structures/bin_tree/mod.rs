@@ -1,118 +1,93 @@
-use std::{cmp::Ordering, fmt::Debug};
+use std::{cmp::Ordering, fmt::Debug, mem::replace};
 
-pub trait OrderedCopy: Ord + Copy + Debug {}
-impl<T: Ord + Copy + Debug> OrderedCopy for T {}
-
-pub type OptionNode<T> = Option<Box<Node<T>>>;
+pub trait OrderedCopy: Ord + Copy {}
+impl<T: Ord + Copy> OrderedCopy for T {}
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Node<OrderedCopy> {
-    value: OrderedCopy,
-    left: OptionNode<OrderedCopy>,
-    right: OptionNode<OrderedCopy>,
+pub enum BinaryTree<T> {
+    Nil,
+    Some {
+        value: T,
+        left: Box<BinaryTree<T>>,
+        right: Box<BinaryTree<T>>,
+    },
 }
 
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
-pub struct BinTree<OrderedCopy> {
-    root: OptionNode<OrderedCopy>,
+impl<T> Default for BinaryTree<T> {
+    fn default() -> Self {
+        Self::Nil
+    }
 }
 
-impl<T: OrderedCopy> BinTree<T> {
+impl<T: OrderedCopy> BinaryTree<T> {
+    pub fn new(value: T, l: BinaryTree<T>, r: BinaryTree<T>) -> Self {
+        Self::Some {
+            value,
+            left: Box::new(l),
+            right: Box::new(r),
+        }
+    }
+
     pub fn insert(&mut self, chave: T) {
-        Node::insert(&mut self.root, chave)
+        match self {
+            Self::Nil => *self = BinaryTree::new(chave, Self::Nil, Self::Nil),
+            Self::Some { value, left, right } => match chave.cmp(value) {
+                Ordering::Less => left.insert(chave),
+                Ordering::Greater => right.insert(chave),
+                Ordering::Equal => (),
+            },
+        }
     }
 
     pub fn search(&self, chave: T) -> bool {
-        Node::search(&self.root, chave)
+        match self {
+            Self::Nil => false,
+            Self::Some { value, left, right } => match chave.cmp(value) {
+                Ordering::Less => left.search(chave),
+                Ordering::Greater => right.search(chave),
+                Ordering::Equal => true,
+            },
+        }
     }
 
     pub fn remove(&mut self, chave: T) {
-        Node::remove(&mut self.root, chave);
-    }
-}
-
-// Principal
-impl<T: OrderedCopy> Node<T> {
-    fn insert(node_opt: &mut OptionNode<T>, chave: T) {
-        match node_opt {
-            Some(node) => match chave.cmp(&node.value) {
-                Ordering::Less => Self::insert(&mut node.left, chave),
-                Ordering::Greater => Self::insert(&mut node.right, chave),
-                _ => (),
+        match self {
+            Self::Nil => (),
+            Self::Some { value, left, right } => match chave.cmp(value) {
+                Ordering::Less => left.remove(chave),
+                Ordering::Greater => right.remove(chave),
+                Ordering::Equal => self.remove_node(),
             },
-            None => *node_opt = Node::new_node(chave),
         }
     }
 
-    fn search(node_opt: &OptionNode<T>, chave: T) -> bool {
-        match node_opt {
-            Some(node) => match chave.cmp(&node.value) {
-                Ordering::Equal => true,
-                Ordering::Less => Self::search(&node.left, chave),
-                Ordering::Greater => Self::search(&node.right, chave),
-            },
-            None => false,
-        }
-    }
-
-    fn remove(node_opt: &mut OptionNode<T>, chave: T) {
-        if let Some(node) = node_opt {
-            match chave.cmp(&node.value) {
-                Ordering::Less => Self::remove(&mut node.left, chave),
-                Ordering::Greater => Self::remove(&mut node.right, chave),
-                Ordering::Equal => Self::remove_node(node_opt),
-            }
-        }
-    }
-}
-
-// Inicialização
-impl<T: OrderedCopy> Node<T> {
-    pub fn new(value: T, left: OptionNode<T>, right: OptionNode<T>) -> Self {
-        Self { value, left, right }
-    }
-
-    pub fn new_node(chave: T) -> OptionNode<T> {
-        Some(Box::new(Self::new(chave, None, None)))
-    }
-}
-
-// Auxiliar
-impl<T: OrderedCopy> Node<T> {
-    fn find_min(side: &OptionNode<T>) -> OptionNode<T> {
-        match side {
-            None => None,
-            Some(node) if node.left.is_none() => Some(node.clone()),
-            Some(node) => Self::find_min(&node.left),
-        }
-    }
-
-    fn remove_node(node_opt: &mut OptionNode<T>) {
-        if let Some(node) = node_opt {
-            match (node.left.take(), node.right.take()) {
-                (None, None) => {
-                    *node_opt = None;
-                }
-                (None, Some(right_node)) => {
-                    node.value = right_node.value;
-                    node.left = right_node.left;
-                    node.right = right_node.right;
-                }
-                (Some(left_node), None) => {
-                    node.value = left_node.value;
-                    node.left = left_node.left;
-                    node.right = left_node.right;
-                }
-                (Some(left_node), Some(right_node)) => {
-                    let mut min_node = Node::find_min(&mut Some(right_node));
-                    if let Some(min) = min_node.as_mut() {
-                        node.value = min.value;
-                        node.left = Some(left_node);
-                        node.right = min.right.clone();
-                        Node::remove(&mut node.right, node.value);
+    fn remove_node(&mut self) {
+        match self {
+            Self::Nil => (),
+            Self::Some { left, right, value } => match (&mut **left, &mut **right) {
+                (Self::Nil, Self::Nil) => *self = Self::Nil,
+                (Self::Nil, _) => *self = replace(&mut **right, Self::Nil),
+                (_, Self::Nil) => *self = replace(&mut **left, Self::Nil),
+                (_, _) => {
+                    if let Self::Some {
+                        value: min_value, ..
+                    } = right.find_min()
+                    {
+                        *value = *min_value;
+                        right.remove(*min_value);
                     }
                 }
-            }
+            },
+        }
+    }
+
+    fn find_min(&self) -> &Self {
+        match self {
+            Self::Some { left, .. } => match **left {
+                Self::Nil => self,
+                _ => left.find_min(),
+            },
+            _ => self,
         }
     }
 }
