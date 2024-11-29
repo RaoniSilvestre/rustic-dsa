@@ -1,6 +1,21 @@
+use std::ops::{Index, IndexMut};
+
 #[derive(Debug, Default)]
 pub struct MaxHeap<T> {
     pub data: Vec<T>,
+}
+
+impl<T: Ord> MaxHeap<T> {
+    pub fn heapsort(mut self) -> Vec<T> {
+        let mut sorted = Vec::with_capacity(self.len());
+
+        while let Some(max) = self.pop() {
+            sorted.push(max);
+        }
+
+        sorted.reverse();
+        sorted
+    }
 }
 
 impl<T: Default + Ord> From<Vec<T>> for MaxHeap<T> {
@@ -10,8 +25,20 @@ impl<T: Default + Ord> From<Vec<T>> for MaxHeap<T> {
         for i in (0..len / 2).rev() {
             heap.bubble_down(i);
         }
-
         heap
+    }
+}
+
+impl<T> Index<usize> for MaxHeap<T> {
+    type Output = T;
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.data[index]
+    }
+}
+
+impl<T> IndexMut<usize> for MaxHeap<T> {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.data[index]
     }
 }
 
@@ -45,7 +72,11 @@ impl<T: Ord> MaxHeap<T> {
         self.data.len()
     }
 
-    fn bubble_up(&mut self, mut index: usize) {
+    pub fn swap(&mut self, i: usize, j: usize) {
+        self.data.swap(i, j);
+    }
+
+    pub fn bubble_up(&mut self, mut index: usize) {
         while index > 0 {
             let parent = (index - 1) / 2;
             if self.data[index] <= self.data[parent] {
@@ -57,7 +88,7 @@ impl<T: Ord> MaxHeap<T> {
         }
     }
 
-    fn bubble_down(&mut self, mut index: usize) {
+    pub fn bubble_down(&mut self, mut index: usize) {
         let last_index = match self.data.len() {
             0 => 0,
             n => n - 1,

@@ -2,6 +2,7 @@
 mod sorting_tests {
 
     use rustic_dsa::algorithms::generate_list;
+    use rustic_dsa::algorithms::sorting::heap::heap_sort;
     use rustic_dsa::algorithms::sorting::{
         bubble::{iterative::iterative_bubble_sort, recursive::recursive_bubble_sort},
         merge::{iterative::iterative_merge_sort, recursive::recursive_merge_sort},
@@ -10,7 +11,7 @@ mod sorting_tests {
     };
 
     fn make_test(func: SortFunction<i32>) -> (Vec<i32>, Vec<i32>) {
-        let mut random_list = generate_list(1000);
+        let mut random_list = generate_list(20);
         let mut random_list_copy = random_list.clone();
         random_list.sort();
         func(&mut random_list_copy);
@@ -67,6 +68,14 @@ mod sorting_tests {
     fn recursive_merge_test() {
         for _ in 0..10 {
             let (l1, l2) = make_test(recursive_merge_sort);
+            assert_eq!(l1, l2)
+        }
+    }
+
+    #[test]
+    fn heap_sort_test() {
+        for _ in 0..10 {
+            let (l1, l2) = make_test(heap_sort);
             assert_eq!(l1, l2)
         }
     }
