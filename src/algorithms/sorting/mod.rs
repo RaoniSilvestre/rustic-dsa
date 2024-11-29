@@ -1,10 +1,7 @@
 pub mod bubble;
+pub mod heap;
 pub mod merge;
 pub mod quick;
-
-pub trait OrderedCopy: PartialOrd + Copy {}
-
-impl<T: PartialOrd + Copy> OrderedCopy for T {}
 
 pub type SortFunction<T> = fn(&mut Vec<T>);
 

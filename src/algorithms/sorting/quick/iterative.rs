@@ -1,4 +1,4 @@
-use crate::algorithms::sorting::OrderedCopy;
+use crate::OrderedCopy;
 
 /// Ordena um vetor em ordem crescente usando o algoritmo Quick Sort iterativo.
 ///

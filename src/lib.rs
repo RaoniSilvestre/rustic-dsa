@@ -3,6 +3,9 @@ use std::{
     io::{BufRead, BufReader, Result},
 };
 
+pub trait OrderedCopy: Ord + Copy {}
+impl<T: Ord + Copy> OrderedCopy for T {}
+
 pub fn read_numbers_from_file(file_path: &str) -> Result<Vec<i32>> {
     let file = File::open(file_path)?;
     let reader = BufReader::new(file);

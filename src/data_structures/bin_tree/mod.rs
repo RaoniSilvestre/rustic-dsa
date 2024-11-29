@@ -1,7 +1,6 @@
 use std::{cmp::Ordering, fmt::Debug, mem::replace};
 
-pub trait OrderedCopy: Ord + Copy {}
-impl<T: Ord + Copy> OrderedCopy for T {}
+use crate::OrderedCopy;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum BinaryTree<T> {

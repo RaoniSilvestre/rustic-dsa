@@ -1,10 +1,13 @@
 use std::{fmt::Display, fs::File, io::Write, path::Path, time::Instant};
 
-use crate::algorithms::sorting::{
-    bubble::{iterative::iterative_bubble_sort, recursive::recursive_bubble_sort},
-    merge::{iterative::iterative_merge_sort, recursive::recursive_merge_sort},
-    quick::{iterative::iterative_quick_sort, recursive::recursive_quick_sort},
-    OrderedCopy, SortFunction,
+use crate::{
+    algorithms::sorting::{
+        bubble::{iterative::iterative_bubble_sort, recursive::recursive_bubble_sort},
+        merge::{iterative::iterative_merge_sort, recursive::recursive_merge_sort},
+        quick::{iterative::iterative_quick_sort, recursive::recursive_quick_sort},
+        SortFunction,
+    },
+    OrderedCopy,
 };
 
 /// Executa uma função de ordenação em um vetor e mede o tempo necessário para completá-la.
