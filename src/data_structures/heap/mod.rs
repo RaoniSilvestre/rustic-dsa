@@ -1,5 +1,8 @@
 use std::ops::{Index, IndexMut};
 
+pub mod max_heap;
+pub mod min_heap;
+
 #[derive(Debug, Default)]
 pub struct MaxHeap<T> {
     pub data: Vec<T>,
@@ -14,6 +17,7 @@ impl<T: Ord> MaxHeap<T> {
         }
 
         sorted.reverse();
+
         sorted
     }
 }
