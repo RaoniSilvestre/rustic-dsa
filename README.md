@@ -32,7 +32,7 @@ rust.
 
 ### 0. Instale o rust
 
-[https://www.rust-lang.org/tools/install](Rust official site)
+[Rust official site](https://www.rust-lang.org/tools/install)
 
 ### 1. Clone o repositório
 
