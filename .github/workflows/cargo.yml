@@ -28,6 +28,10 @@ jobs:
       - name: Install dependencies
         run: cargo fetch
 
+      # Cargo check
+      - name: Check
+        run: cargo check
+
       # Construir o projeto
       - name: Build
         run: cargo build --verbose
