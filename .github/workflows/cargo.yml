@@ -1,0 +1,37 @@
+
+name: Rust CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      # Checkout do código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Configuração do Rust
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable # Você pode alterar para nightly ou outro
+
+      # Instalar dependências
+      - name: Install dependencies
+        run: cargo fetch
+
+      # Construir o projeto
+      - name: Build
+        run: cargo build --verbose
+
+      # Rodar os testes
+      - name: Test
+        run: cargo test --verbose
