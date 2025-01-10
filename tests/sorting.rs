@@ -2,7 +2,8 @@
 mod sorting_tests {
 
     use rustic_dsa::algorithms::generate_list;
-    use rustic_dsa::algorithms::sorting::heap::heap_sort;
+    use rustic_dsa::algorithms::sorting::heap::max_heap::max_heapsort;
+    use rustic_dsa::algorithms::sorting::heap::min_heap::min_heapsort;
     use rustic_dsa::algorithms::sorting::{
         bubble::{iterative::iterative_bubble_sort, recursive::recursive_bubble_sort},
         merge::{iterative::iterative_merge_sort, recursive::recursive_merge_sort},
@@ -73,9 +74,17 @@ mod sorting_tests {
     }
 
     #[test]
-    fn heap_sort_test() {
+    fn max_heapsort_test() {
         for _ in 0..10 {
-            let (l1, l2) = make_test(heap_sort);
+            let (l1, l2) = make_test(max_heapsort);
+            assert_eq!(l1, l2)
+        }
+    }
+
+    #[test]
+    fn min_heapsort_test() {
+        for _ in 0..10 {
+            let (l1, l2) = make_test(min_heapsort);
             assert_eq!(l1, l2)
         }
     }
