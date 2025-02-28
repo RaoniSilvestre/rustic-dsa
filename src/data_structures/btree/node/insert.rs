@@ -5,7 +5,7 @@ use crate::data_structures::btree::{
 
 impl Node {
     pub fn insert(&mut self, k: Key) -> InsertionResult {
-        let result = self.search(&k);
+        let result = self.search(k.key);
 
         if self.is_leaf {
             return self.try_insert(k);

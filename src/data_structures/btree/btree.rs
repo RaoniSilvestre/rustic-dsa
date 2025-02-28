@@ -10,10 +10,10 @@ impl BTree {
         }
     }
 
-    pub fn find(&self, k: Key) -> Option<Key> {
+    pub fn find(&self, k: i32) -> Option<Key> {
         let mut curr_node = &self.root;
         loop {
-            match curr_node.search(&k) {
+            match curr_node.search(k) {
                 SearchResult::Find(i) => return curr_node.key(i).cloned(),
                 SearchResult::GoDown(i) => match curr_node.child(i) {
                     None => return None,
@@ -31,7 +31,7 @@ impl BTree {
         }
     }
 
-    pub fn remove(&mut self, k: Key) {
+    pub fn remove(&mut self, k: i32) {
         self.root.remove(k);
     }
 

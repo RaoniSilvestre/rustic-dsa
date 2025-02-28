@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 rand = "0.8.5"
 serde = { version = "1.0.218", features = ["derive"] }
+serde_plain = "1.0.2"
 
 [dev-dependencies]
 criterion = { version = "0.4.0", features = ["html_reports"] }
@@ -16,7 +17,3 @@ criterion = { version = "0.4.0", features = ["html_reports"] }
 [[bench]]
 name = "sorting"
 harness = false
-
-[[bin]]
-name = "generator"
-path = "./src/generator.rs"

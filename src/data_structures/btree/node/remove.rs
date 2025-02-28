@@ -4,8 +4,8 @@ use crate::data_structures::btree::{
 };
 
 impl Node {
-    pub fn remove(&mut self, k: Key) -> RemovalResult {
-        match (self.search(&k), self.is_leaf) {
+    pub fn remove(&mut self, k: i32) -> RemovalResult {
+        match (self.search(k), self.is_leaf) {
             (SearchResult::GoDown(_), true) => RemovalResult::RemoveCompleted,
             (SearchResult::Find(i), true) => self.remove_leaf(k, i),
             (SearchResult::Find(i), false) => self.remove_branch(k, i),
@@ -13,15 +13,19 @@ impl Node {
                 let child = self.children[i].remove(k);
 
                 match child {
-                    RemovalResult::NotLeafRemoveFail(_failed_key, _new_node) => todo!(),
-                    RemovalResult::LeafRemoveFail(_failed_key) => todo!(),
+                    RemovalResult::NotLeafRemoveFail(_failed_key, _new_node) => {
+                        todo!("NotLeafRemoveFail ainda não foi implementado")
+                    }
+                    RemovalResult::LeafRemoveFail(_failed_key) => {
+                        todo!("LeafRemoveFail não foi implementado")
+                    }
                     RemovalResult::RemoveCompleted => RemovalResult::RemoveCompleted,
                 }
             }
         }
     }
 
-    fn remove_leaf(&mut self, k: Key, i: usize) -> RemovalResult {
+    fn remove_leaf(&mut self, k: i32, i: usize) -> RemovalResult {
         let grade = (self.grade + 1) as usize;
 
         match self.keys.len() >= grade {
@@ -33,27 +37,26 @@ impl Node {
         }
     }
 
-    fn remove_branch(&mut self, k: Key, i: usize) -> RemovalResult {
-        let left_len = self.children[i].keys.len();
-        let right_len = self.children[i + 1].keys.len();
+    fn remove_branch(&mut self, _k: i32, i: usize) -> RemovalResult {
+        let k = self.pop_rightmost_left();
 
-        let grade = (self.grade + 1) as usize;
+        self.keys[i] = k;
 
-        match (left_len >= grade, right_len >= grade) {
-            (true, _) => {
-                let max = self.children[i].keys.pop().unwrap();
-                self.keys[i] = max;
-                return RemovalResult::RemoveCompleted;
-            }
-            (_, true) => {
-                let min = self.children[i + 1].keys.remove(0);
-                self.keys[i] = min;
-                return RemovalResult::RemoveCompleted;
-            }
-            (false, false) => {
-                // Precisa fazer merge
-                todo!()
-            }
+        return RemovalResult::RemoveCompleted;
+    }
+
+    fn pop_rightmost_left(&mut self) -> Key {
+        let left_node = self
+            .child_mut(0)
+            .expect("Left node inexistente na função pop_rightmost_left");
+
+        left_node.pop_rightmost()
+    }
+
+    fn pop_rightmost(&mut self) -> Key {
+        match self.is_leaf {
+            true => self.last_key(),
+            false => self.last_child().pop_rightmost(),
         }
     }
 }

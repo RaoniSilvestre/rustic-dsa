@@ -21,10 +21,10 @@ pub enum SearchResult {
 }
 
 #[derive(Debug)]
-pub enum RemovalResult{
+pub enum RemovalResult {
     RemoveCompleted,
-    LeafRemoveFail(Key),
-    NotLeafRemoveFail(Key, Node)
+    LeafRemoveFail(i32),
+    NotLeafRemoveFail(Key, Node),
 }
 
 impl Ord for Node {
@@ -40,10 +40,10 @@ impl Ord for Key {
 }
 
 impl Key {
-    pub fn new(id: i32, nome: String, quantidade: usize) -> Self {
+    pub fn new(id: i32, nome: &str, quantidade: usize) -> Self {
         Self {
             key: id,
-            nome,
+            nome: String::from(nome),
             quantidade,
         }
     }
