@@ -46,6 +46,14 @@ impl Key {
             quantidade,
         }
     }
+
+    pub fn new_from_key(k: i32) -> Self {
+        Self {
+            key: k,
+            nome: String::from("nome"),
+            quantidade: 0,
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for Key {

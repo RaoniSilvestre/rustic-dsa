@@ -35,13 +35,13 @@ use crate::{
 /// use rustic_dsa::running::run;
 /// run(&mut vec![3, 1, 4, 1, 5], iterative_merge_sort, String::from("Merge Sort"));
 /// ```
-pub fn run<T, F>(mut array: &mut [T], mut sort_function: F, function_name: String)
+pub fn run<T, F>(array: &mut [T], mut sort_function: F, function_name: String)
 where
     T: OrderedCopy + Display,
     F: FnMut(&mut [T]),
 {
     let now = Instant::now();
-    sort_function(&mut array);
+    sort_function(array);
     let elapsed = now.elapsed();
 
     println!("{}:\n  - TIMING = {:.2?}\n", function_name, elapsed);
