@@ -33,7 +33,7 @@ use crate::{
 /// ```
 /// use rustic_dsa::algorithms::sorting::merge::iterative::iterative_merge_sort;
 /// use rustic_dsa::running::run;
-/// run(vec![3, 1, 4, 1, 5], iterative_merge_sort, String::from("Merge Sort"));
+/// run(&mut vec![3, 1, 4, 1, 5], iterative_merge_sort, String::from("Merge Sort"));
 /// ```
 pub fn run<T, F>(mut array: &mut [T], mut sort_function: F, function_name: String)
 where
@@ -71,7 +71,7 @@ where
 /// # Exemplo
 /// ```
 /// use rustic_dsa::running::run_array;
-/// run_array(vec![10, 7, 3, 2, 1]);
+/// run_array(&mut vec![10, 7, 3, 2, 1]);
 /// ```
 ///
 /// # Observação
