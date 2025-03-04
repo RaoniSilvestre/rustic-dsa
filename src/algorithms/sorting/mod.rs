@@ -3,7 +3,7 @@ pub mod heap;
 pub mod merge;
 pub mod quick;
 
-pub type SortFunction<T> = fn(&mut Vec<T>);
+pub type SortFunction<T> = fn(&mut [T]);
 
 pub trait IsSorted<T: PartialOrd> {
     fn is_sortted(&self) -> bool;

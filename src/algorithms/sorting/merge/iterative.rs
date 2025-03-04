@@ -23,11 +23,12 @@ use crate::OrderedCopy;
 /// - Pior caso: O(n log n), onde `n` é o número de elementos no vetor.
 /// - Melhor caso: O(n log n), pois o Merge Sort sempre divide e mescla elementos.
 ///
-pub fn iterative_merge_sort(array: &mut Vec<impl OrderedCopy>) {
-    *array = merge_sorting(array, array.len());
+pub fn iterative_merge_sort<T: OrderedCopy>(array: &mut [T]) {
+    let sorted = merge_sorting(array, array.len());
+    array.copy_from_slice(&sorted);
 }
 
-fn merge_sorting<T: OrderedCopy>(arr: &Vec<T>, tamanho: usize) -> Vec<T> {
+fn merge_sorting<T: OrderedCopy>(arr: &mut [T], tamanho: usize) -> Vec<T> {
     let mut result: Vec<T> = arr.to_vec();
     let mut i: usize = 1;
 

@@ -22,7 +22,7 @@ use crate::OrderedCopy;
 /// - Pior caso: O(n²), onde `n` é o número de elementos no vetor (quando o pivô é o menor ou maior elemento em todas as partições).
 /// - Melhor caso: O(n log n), quando o pivô divide bem o vetor (caso médio).
 ///
-pub fn iterative_quick_sort<T: OrderedCopy>(array: &mut Vec<T>) {
+pub fn iterative_quick_sort<T: OrderedCopy>(array: &mut [T]) {
     let mut stack = Vec::new();
     let tamanho = array.len();
 

@@ -23,7 +23,7 @@ use crate::OrderedCopy;
 /// # Complexidade de Tempo
 /// - Pior caso: O(n²), onde `n` é o número de elementos no vetor.
 /// - Melhor caso: O(n²), quando o vetor já está ordenado.
-pub fn iterative_bubble_sort<T: OrderedCopy>(array: &mut Vec<T>) {
+pub fn iterative_bubble_sort<T: OrderedCopy>(array: &mut [T]) {
     let len = array.len();
 
     for i in 0..len {

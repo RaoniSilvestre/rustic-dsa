@@ -21,11 +21,11 @@ use crate::OrderedCopy;
 /// - Pior caso: O(n²), onde `n` é o número de elementos no vetor (quando o pivô é o menor ou maior elemento em todas as partições).
 /// - Melhor caso: O(n log n), quando o pivô divide bem o vetor (caso médio).
 ///
-pub fn recursive_quick_sort<T: OrderedCopy>(array: &mut Vec<T>) {
+pub fn recursive_quick_sort<T: OrderedCopy>(array: &mut [T]) {
     sorting(array, 0, array.len() - 1)
 }
 
-fn sorting<T: OrderedCopy>(lista: &mut Vec<T>, left: usize, right: usize) {
+fn sorting<T: OrderedCopy>(lista: &mut [T], left: usize, right: usize) {
     if left < right {
         let index_pivot = partition(lista, left, right);
         sorting(lista, left, index_pivot);
@@ -33,7 +33,7 @@ fn sorting<T: OrderedCopy>(lista: &mut Vec<T>, left: usize, right: usize) {
     }
 }
 
-fn partition<T: OrderedCopy>(lista: &mut Vec<T>, mut left: usize, mut right: usize) -> usize {
+fn partition<T: OrderedCopy>(lista: &mut [T], mut left: usize, mut right: usize) -> usize {
     let pivot = left;
     left += 1;
     while left <= right {
@@ -48,9 +48,7 @@ fn partition<T: OrderedCopy>(lista: &mut Vec<T>, mut left: usize, mut right: usi
         }
         if right >= left {
             lista.swap(left, right);
-            if right != 0 {
-                right -= 1;
-            }
+            right = right.saturating_sub(1);
         }
     }
     lista.swap(pivot, right);
