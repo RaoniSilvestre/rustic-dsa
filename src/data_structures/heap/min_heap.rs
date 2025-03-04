@@ -104,7 +104,7 @@ impl<T> MinHeap<T> {
     /// Busca no topo da MinHeap
     /// Tem que retornar sempre o valor com menor prioridade
     pub fn peek(&self) -> Option<&T> {
-        self.data.get(0)
+        self.data.first()
     }
 
     /// Verifica se a MinHeap está vazia

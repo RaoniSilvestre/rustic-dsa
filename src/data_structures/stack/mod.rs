@@ -32,11 +32,8 @@ impl<T: Copy + Clone + PartialEq> Stack<T> {
     }
 
     pub fn pop(&mut self) {
-        match &self.top {
-            Some(node) => {
-                self.top = node.pred.clone();
-            }
-            None => (),
+        if let Some(node) = &self.top {
+            self.top = node.pred.clone();
         }
     }
 }
