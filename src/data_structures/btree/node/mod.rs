@@ -27,13 +27,6 @@ impl Node {
     }
 
     pub fn is_full(&self) -> bool {
-        println!(
-            "\n------\nself: {}\n{} is equal to {} ? {}",
-            self,
-            self.keys.len(),
-            (2 * self.grade + 1),
-            self.keys.len() == (2 * self.grade + 1) as usize
-        );
         self.keys.len() == (2 * self.grade + 1) as usize
     }
 
@@ -43,5 +36,13 @@ impl Node {
 
     fn last_child(&mut self) -> &mut Node {
         self.children.last_mut().expect("Não tinha última child :P")
+    }
+
+    fn max_grade(&self) -> usize {
+        (self.grade + 1) as usize
+    }
+
+    fn can_lend(&self) -> bool {
+        self.keys.len() >= self.grade as usize
     }
 }

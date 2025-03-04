@@ -1,6 +1,6 @@
 use std::cmp::Ordering;
 
-use crate::data_structures::btree::{auxiliary::SearchResult, Key, Node};
+use crate::data_structures::btree::{auxiliary::SearchResult, Node};
 
 impl Node {
     pub fn search(&self, k: i32) -> SearchResult {

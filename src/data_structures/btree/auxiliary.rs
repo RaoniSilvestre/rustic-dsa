@@ -23,8 +23,7 @@ pub enum SearchResult {
 #[derive(Debug)]
 pub enum RemovalResult {
     RemoveCompleted,
-    LeafRemoveFail(i32),
-    NotLeafRemoveFail(Key, Node),
+    InsuficientChildren,
 }
 
 impl Ord for Node {
@@ -56,7 +55,7 @@ impl<'de> Deserialize<'de> for Key {
     {
         struct KeyVisitor;
 
-        impl<'de> Visitor<'de> for KeyVisitor {
+        impl Visitor<'_> for KeyVisitor {
             type Value = Key;
 
             fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
