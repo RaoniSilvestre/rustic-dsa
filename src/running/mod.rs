@@ -33,15 +33,15 @@ use crate::{
 /// ```
 /// use rustic_dsa::algorithms::sorting::merge::iterative::iterative_merge_sort;
 /// use rustic_dsa::running::run;
-/// run(vec![3, 1, 4, 1, 5], iterative_merge_sort, String::from("Merge Sort"));
+/// run(&mut vec![3, 1, 4, 1, 5], iterative_merge_sort, String::from("Merge Sort"));
 /// ```
-pub fn run<T, F>(mut array: Vec<T>, mut sort_function: F, function_name: String)
+pub fn run<T, F>(array: &mut [T], mut sort_function: F, function_name: String)
 where
     T: OrderedCopy + Display,
-    F: FnMut(&mut Vec<T>),
+    F: FnMut(&mut [T]),
 {
     let now = Instant::now();
-    sort_function(&mut array);
+    sort_function(array);
     let elapsed = now.elapsed();
 
     println!("{}:\n  - TIMING = {:.2?}\n", function_name, elapsed);
@@ -71,12 +71,12 @@ where
 /// # Exemplo
 /// ```
 /// use rustic_dsa::running::run_array;
-/// run_array(vec![10, 7, 3, 2, 1]);
+/// run_array(&mut vec![10, 7, 3, 2, 1]);
 /// ```
 ///
 /// # Observação
 /// Cada função de ordenação é aplicada a uma cópia do array, então o array original permanece inalterado.
-pub fn run_array(array: Vec<i32>) {
+pub fn run_array(array: &mut [i32]) {
     let array_of_sorts: Vec<(&str, SortFunction<i32>)> = vec![
         ("RECURSIVE_QUICKSORT", recursive_quick_sort),
         ("ITERATIVE_QUICKSORT", iterative_quick_sort),
@@ -90,6 +90,6 @@ pub fn run_array(array: Vec<i32>) {
     println!("Array Length: {}\n", array.len());
 
     for (name, func) in array_of_sorts {
-        run::<i32, _>(array.clone(), func, String::from(name));
+        run::<i32, _>(array, func, String::from(name));
     }
 }

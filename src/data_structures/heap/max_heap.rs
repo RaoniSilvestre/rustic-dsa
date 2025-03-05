@@ -127,7 +127,7 @@ impl<T> MaxHeap<T> {
     /// Busca no topo da MaxHeap
     /// Tem que retornar sempre o valor com maior prioridade
     pub fn peek(&self) -> Option<&T> {
-        self.data.get(0)
+        self.data.first()
     }
 
     /// Verifica se a MaxHeap está vazia

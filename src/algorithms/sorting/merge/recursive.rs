@@ -22,11 +22,12 @@ use crate::OrderedCopy;
 /// - Pior caso: O(n log n), onde `n` é o número de elementos no vetor.
 /// - Melhor caso: O(n log n), pois o Merge Sort sempre divide e mescla os elementos.
 ///
-pub fn recursive_merge_sort(array: &mut Vec<impl OrderedCopy>) {
-    *array = merge_sorting(array);
+pub fn recursive_merge_sort<T: OrderedCopy>(array: &mut [T]) {
+    let new_array = merge_sorting(array);
+    array.copy_from_slice(&new_array);
 }
 
-fn merge_sorting<T: OrderedCopy>(arr: &mut Vec<T>) -> Vec<T> {
+fn merge_sorting<T: OrderedCopy>(arr: &mut [T]) -> Vec<T> {
     if arr.len() <= 1 {
         return arr.to_vec();
     }

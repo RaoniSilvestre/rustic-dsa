@@ -22,6 +22,12 @@ impl<T: Ord> MaxHeap<T> {
     }
 }
 
+impl<T: Default + Ord + Copy> From<&mut [T]> for MaxHeap<T> {
+    fn from(value: &mut [T]) -> Self {
+        Self::from(value.to_vec())
+    }
+}
+
 impl<T: Default + Ord> From<Vec<T>> for MaxHeap<T> {
     fn from(data: Vec<T>) -> Self {
         let mut heap = MaxHeap { data };
@@ -65,7 +71,7 @@ impl<T: Ord> MaxHeap<T> {
     }
 
     pub fn peek(&self) -> Option<&T> {
-        self.data.get(0)
+        self.data.first()
     }
 
     pub fn is_empty(&self) -> bool {

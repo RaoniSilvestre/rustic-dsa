@@ -33,25 +33,17 @@ impl<T: Copy + Clone + PartialEq> Queue<T> {
     }
 
     pub fn pop(&mut self) {
-        match &self.front {
-            Some(node) => {
-                let first_node = node.clone();
-                self.front = first_node.deref().borrow_mut().next.clone();
-            }
-            None => (),
+        if let Some(node) = &self.front {
+            self.front = node.clone().deref().borrow_mut().next.clone();
         }
     }
 
     pub fn front(&self) -> Option<T> {
-        self.front
-            .as_ref()
-            .and_then(|node| Some(node.borrow().value))
+        self.front.as_ref().map(|node| node.borrow().value)
     }
 
     pub fn back(&self) -> Option<T> {
-        self.rear
-            .as_ref()
-            .and_then(|node| Some(node.borrow().value))
+        self.rear.as_ref().map(|node| node.borrow().value)
     }
 
     pub fn is_empty(&self) -> bool {

@@ -22,12 +22,12 @@ use crate::OrderedCopy;
 /// Onde `n` é o numero de elementos no vetor;
 /// - Pior caso: O(n²).
 /// - Melhor caso: O(mega)(n²).
-pub fn recursive_bubble_sort<T: OrderedCopy>(array: &mut Vec<T>) {
+pub fn recursive_bubble_sort<T: OrderedCopy>(array: &mut [T]) {
     let len = array.len();
     recursive_bubble(array, len)
 }
 
-fn recursive_bubble<T: OrderedCopy>(vec: &mut Vec<T>, n: usize) {
+fn recursive_bubble<T: OrderedCopy>(vec: &mut [T], n: usize) {
     if n == 1 {
         return;
     }
@@ -35,7 +35,7 @@ fn recursive_bubble<T: OrderedCopy>(vec: &mut Vec<T>, n: usize) {
     recursive_bubble(vec, n - 1);
 }
 
-fn bubble_pass<T: OrderedCopy>(vec: &mut Vec<T>, i: usize, j: usize) {
+fn bubble_pass<T: OrderedCopy>(vec: &mut [T], i: usize, j: usize) {
     if i == j - 1 {
         return;
     }
