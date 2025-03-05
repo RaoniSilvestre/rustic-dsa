@@ -1,4 +1,4 @@
-use auxiliary::{InsertionResult, SearchResult};
+use auxiliary::{InsertionResult, RemovalResult, SearchResult};
 use serde::Serialize;
 
 mod auxiliary;
@@ -10,7 +10,7 @@ pub struct BTree {
     root: Node,
 }
 
-#[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct Node {
     keys: Vec<Key>,
     children: Vec<Node>,
@@ -18,7 +18,7 @@ pub struct Node {
     grade: i32,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct Key {
     key: i32,
     nome: String,
@@ -54,7 +54,18 @@ impl BTree {
     }
 
     pub fn remove(&mut self, k: i32) {
-        self.root.remove(k);
+        let result = self.root.remove(k);
+
+        // Trata underflow na raiz
+        if let RemovalResult::InsuficientChildren = result {
+            if !self.root.is_leaf && self.root.keys.is_empty() {
+                println!("Old root: {}", self);
+                if let Some(new_root) = self.root.children.pop() {
+                    self.root = new_root;
+                    println!("New root: {self}");
+                }
+            }
+        }
     }
 
     fn new_root(root: Node, k: Key, new_node: Node) -> Self {

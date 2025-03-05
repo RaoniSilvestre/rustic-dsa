@@ -12,8 +12,7 @@ pub fn read_numbers_from_file(file_path: &str) -> Result<Vec<i32>> {
 
     let numbers: Vec<i32> = reader
         .lines()
-        .filter_map(|line| line.ok())
-        .filter_map(|line| line.trim().parse::<i32>().ok())
+        .filter_map(|line| line.ok().and_then(|line| line.trim().parse::<i32>().ok()))
         .collect();
 
     Ok(numbers)

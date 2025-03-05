@@ -30,7 +30,7 @@ impl Node {
         InsertionResult::Inserted
     }
 
-    pub fn try_insert(&mut self, k: Key) -> InsertionResult {
+    fn try_insert(&mut self, k: Key) -> InsertionResult {
         self.keys.push(k);
         self.keys.sort();
 
@@ -40,7 +40,7 @@ impl Node {
         }
     }
 
-    pub fn split_node(&mut self) -> InsertionResult {
+    fn split_node(&mut self) -> InsertionResult {
         let t = self.grade as usize;
         let mid = t;
 
@@ -55,12 +55,5 @@ impl Node {
         let middle_key = self.keys.remove(mid);
 
         InsertionResult::AddToFater(middle_key, right_node)
-    }
-
-    pub fn insert_key(&mut self, k: Key) -> InsertionResult {
-        self.keys.push(k);
-        self.keys.sort();
-
-        InsertionResult::Inserted
     }
 }

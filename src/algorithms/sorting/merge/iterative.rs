@@ -39,14 +39,9 @@ fn merge_sorting<T: OrderedCopy>(arr: &mut [T], tamanho: usize) -> Vec<T> {
             let mid: usize = std::cmp::min(esquerda + i - 1, tamanho - 1);
             let right_arr: usize = std::cmp::min(esquerda + 2 * i - 1, tamanho - 1);
 
-            let merged: Vec<T> = merge(
-                &result[esquerda..mid + 1].to_vec(),
-                &result[mid + 1..right_arr + 1].to_vec(),
-            );
+            let merged: Vec<T> = merge(&result[esquerda..mid + 1], &result[mid + 1..right_arr + 1]);
 
-            for k in 0..merged.len() {
-                result[esquerda + k] = merged[k].clone();
-            }
+            result[esquerda..(merged.len() + esquerda)].copy_from_slice(&merged[..]);
 
             esquerda += 2 * i;
         }
@@ -57,7 +52,7 @@ fn merge_sorting<T: OrderedCopy>(arr: &mut [T], tamanho: usize) -> Vec<T> {
     result
 }
 
-fn merge<T: OrderedCopy>(arr_1: &Vec<T>, arr_2: &Vec<T>) -> Vec<T> {
+fn merge<T: OrderedCopy>(arr_1: &[T], arr_2: &[T]) -> Vec<T> {
     let mut i: usize = 0;
     let mut j: usize = 0;
 

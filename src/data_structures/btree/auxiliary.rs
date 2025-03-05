@@ -32,6 +32,18 @@ impl Ord for Node {
     }
 }
 
+impl PartialOrd for Node {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.keys[0].cmp(&other.keys[0]))
+    }
+}
+
+impl PartialOrd for Key {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.key.cmp(&other.key))
+    }
+}
+
 impl Ord for Key {
     fn cmp(&self, other: &Self) -> Ordering {
         self.key.cmp(&other.key)

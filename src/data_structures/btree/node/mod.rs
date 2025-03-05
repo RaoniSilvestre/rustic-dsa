@@ -38,11 +38,7 @@ impl Node {
         self.children.last_mut().expect("Não tinha última child :P")
     }
 
-    fn max_grade(&self) -> usize {
-        (self.grade + 1) as usize
-    }
-
     fn can_lend(&self) -> bool {
-        self.keys.len() >= self.grade as usize
+        self.keys.len() > self.grade as usize
     }
 }

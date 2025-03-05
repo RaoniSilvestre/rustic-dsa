@@ -8,7 +8,7 @@ impl Node {
         match (self.search(k), self.is_leaf) {
             (SearchResult::GoDown(_), true) => RemovalResult::RemoveCompleted,
             (SearchResult::GoDown(i), false) => self.remove_on_child(k, i),
-            (SearchResult::Find(i), false) => self.remove_branch(k, i),
+            (SearchResult::Find(i), false) => self.remove_branch(i),
             (SearchResult::Find(i), true) => self.remove_leaf(i),
         }
     }
@@ -22,7 +22,7 @@ impl Node {
 
     fn handle_underflow(&mut self, i: usize) -> RemovalResult {
         let has_left = i > 0;
-        let has_right = i < self.max_grade();
+        let has_right = i < self.children.len() - 1;
 
         if has_left && self.children[i - 1].can_lend() {
             self.borrow_from_left(i);
@@ -41,22 +41,66 @@ impl Node {
             (false, false) => return RemovalResult::RemoveCompleted,
         }
 
-        match self.keys.len() >= self.max_grade() {
+        match self.keys.len() >= (self.grade - 1) as usize {
             true => RemovalResult::RemoveCompleted,
             false => RemovalResult::InsuficientChildren,
         }
     }
 
-    fn merge_children(&mut self, _i: usize) {
-        todo!("Merge não implementado ainda")
+    fn merge_children(&mut self, i: usize) {
+        let parent_key = self.keys.remove(i);
+        let mut left_child = self.children.remove(i);
+        let mut right_child = self.children.remove(i);
+
+        left_child.keys.push(parent_key);
+        left_child.keys.append(&mut right_child.keys);
+
+        if !left_child.is_leaf {
+            left_child.children.extend(right_child.children);
+        }
+
+        self.children.insert(i, left_child);
     }
 
-    fn borrow_from_left(&mut self, _i: usize) {
-        todo!("Emprestar do esquerdo não implementado ainda")
+    fn borrow_from_left(&mut self, i: usize) {
+        let left_idx = i - 1;
+        let left_child = &mut self.children[left_idx];
+        let borrowed_key = left_child.keys.pop().unwrap();
+
+        let borrowed_child = if !left_child.is_leaf {
+            left_child.children.pop()
+        } else {
+            None
+        };
+
+        let parent_key = self.keys[left_idx].clone();
+        self.keys[left_idx] = borrowed_key.clone();
+
+        let target_child = &mut self.children[i];
+        target_child.keys.insert(0, parent_key);
+        if let Some(child) = borrowed_child {
+            target_child.children.insert(0, child);
+        }
     }
 
-    fn borrow_from_right(&mut self, _i: usize) {
-        todo!("Emprestar do direito não implementado ainda")
+    fn borrow_from_right(&mut self, i: usize) {
+        let right_idx = i + 1;
+        let right_child = &mut self.children[right_idx];
+        let borrowed_key = right_child.keys.remove(0);
+        let borrowed_child = if !right_child.is_leaf {
+            Some(right_child.children.remove(0))
+        } else {
+            None
+        };
+
+        let parent_key = self.keys[i].clone();
+        self.keys[i] = borrowed_key.clone();
+
+        let target_child = &mut self.children[i];
+        target_child.keys.push(parent_key);
+        if let Some(child) = borrowed_child {
+            target_child.children.push(child);
+        }
     }
 
     fn remove_leaf(&mut self, i: usize) -> RemovalResult {
@@ -68,14 +112,12 @@ impl Node {
         }
     }
 
-    fn remove_branch(&mut self, _k: i32, i: usize) -> RemovalResult {
+    fn remove_branch(&mut self, i: usize) -> RemovalResult {
+        self.keys[i] = self.pop_rightmost_left();
+
         let predecessor = self.get_predecessor(i);
-        let result = self.children[i].remove(predecessor);
-        let k = self.pop_rightmost_left();
 
-        self.keys[i] = k;
-
-        match result {
+        match self.children[i].remove(predecessor) {
             RemovalResult::InsuficientChildren => self.handle_underflow(i),
             completed => completed,
         }

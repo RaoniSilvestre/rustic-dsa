@@ -144,7 +144,10 @@ mod tests {
 
         tree.remove(30);
 
-        assert_eq!(tree.find(30), None);
-        assert!(tree.find(40) == Some(k4));
+        let k11 = tree.find(30);
+        let k22 = tree.find(40);
+
+        assert_eq!(k11, None);
+        assert_eq!(k22, Some(k4));
     }
 }
