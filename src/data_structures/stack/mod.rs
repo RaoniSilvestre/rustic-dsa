@@ -44,6 +44,25 @@ impl<T: Copy> StackNode<T> {
     }
 }
 
+#[test]
+fn new_stack_node() {
+    let sn = StackNode {
+        pred: None,
+        value: 0,
+    };
+
+    let new_sn = StackNode::new(0, None);
+
+    assert_eq!(sn, new_sn)
+}
+
 fn new_link<T: Copy>(value: T, predecessor: Option<Box<StackNode<T>>>) -> StackLink<T> {
     Some(Box::new(StackNode::new(value, predecessor)))
+}
+
+#[test]
+fn new_link_test() {
+    let link = new_link(0, None);
+
+    assert_eq!(Some(Box::new(StackNode::new(0, None))), link)
 }

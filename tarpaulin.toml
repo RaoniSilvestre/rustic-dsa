@@ -1,0 +1,10 @@
+[test_config]
+name = "tarpaulin"
+
+include-files = ["src/algorithms/*", "src/data_structures/*"]
+exclude-files = ["**/display.rs"]
+
+line-coverage = false
+branch-coverage = true
+
+color = "Always"

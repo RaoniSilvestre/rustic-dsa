@@ -96,6 +96,12 @@ impl<T: Default + Ord> From<Vec<T>> for MaxHeap<T> {
     }
 }
 
+impl<T: Default + Ord + Copy> From<&mut [T]> for MaxHeap<T> {
+    fn from(value: &mut [T]) -> Self {
+        Self::from(value.to_vec())
+    }
+}
+
 /// Implementação de inserção e remoção
 impl<T: Ord> MaxHeap<T> {
     /// Adiciona o valor ao final da lista e então usa a função subir(bubble_up)

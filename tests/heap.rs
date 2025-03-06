@@ -34,17 +34,17 @@ mod tests {
         let vec = vec![3, 9, 2, 1, 4, 5];
         let heap = MaxHeap::from(vec);
 
-        for i in 0..heap.data.len() {
+        for i in 0..heap.len() {
             let left_child = 2 * i + 1;
             let right_child = 2 * i + 2;
 
-            if left_child < heap.data.len() {
-                assert!(heap.data[i] >= heap.data[left_child]);
+            if left_child < heap.len() {
+                assert!(heap[i] >= heap[left_child]);
             }
 
-            if right_child < heap.data.len() {
-                let x = heap.data[i];
-                let y = heap.data[right_child];
+            if right_child < heap.len() {
+                let x = heap[i];
+                let y = heap[right_child];
                 debug_assert!(
                     x >= y,
                     "{}",
