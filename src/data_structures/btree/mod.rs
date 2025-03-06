@@ -1,41 +1,29 @@
-use auxiliary::{InsertionResult, RemovalResult, SearchResult};
-use serde::Serialize;
+use auxiliary::{new_root, InsertionResult, RemovalResult, SearchResult};
+use node::Node;
 
 mod auxiliary;
 mod display;
 mod node;
 
+pub trait Key: Ord + Clone {}
+impl<T: Ord + Clone> Key for T {}
+
 #[derive(Debug, Clone, Default)]
-pub struct BTree {
-    root: Node,
+pub struct BTree<T: Key> {
+    root: Node<T>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
-pub struct Node {
-    keys: Vec<Key>,
-    children: Vec<Node>,
-    is_leaf: bool,
-    grade: i32,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
-pub struct Key {
-    key: i32,
-    nome: String,
-    quantidade: usize,
-}
-
-impl BTree {
-    pub fn new(g: i32) -> Self {
+impl<T: Key> BTree<T> {
+    pub fn new(g: usize) -> Self {
         BTree {
             root: Node::new(true, g),
         }
     }
 
-    pub fn find(&self, k: i32) -> Option<Key> {
+    pub fn find(&self, k: T) -> Option<T> {
         let mut curr_node = &self.root;
         loop {
-            match curr_node.search(k) {
+            match curr_node.search(&k) {
                 SearchResult::Find(i) => return curr_node.key(i).cloned(),
                 SearchResult::GoDown(i) => match curr_node.child(i) {
                     None => return None,
@@ -45,39 +33,24 @@ impl BTree {
         }
     }
 
-    pub fn insert(&mut self, k: Key) {
+    pub fn insert(&mut self, k: T) {
         let insertion = self.root.insert(k);
 
         if let InsertionResult::AddToFater(k, new_node) = insertion {
-            *self = Self::new_root(self.root.clone(), k, new_node);
+            *self = new_root(self.root.clone(), k, new_node);
         }
     }
 
-    pub fn remove(&mut self, k: i32) {
+    pub fn remove(&mut self, k: T) {
         let result = self.root.remove(k);
 
         // Trata underflow na raiz
         if let RemovalResult::InsuficientChildren = result {
-            if !self.root.is_leaf && self.root.keys.is_empty() {
-                println!("Old root: {}", self);
-                if let Some(new_root) = self.root.children.pop() {
+            if !self.root.is_leaf && self.root.is_empty() {
+                if let Some(new_root) = self.root.pop_child() {
                     self.root = new_root;
-                    println!("New root: {self}");
                 }
             }
         }
-    }
-
-    fn new_root(root: Node, k: Key, new_node: Node) -> Self {
-        let mut new_root = Node::new(false, root.grade);
-
-        new_root.keys.push(k);
-
-        new_root.children.push(root);
-        new_root.children.push(new_node);
-
-        new_root.children.sort();
-
-        Self { root: new_root }
     }
 }

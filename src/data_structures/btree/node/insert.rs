@@ -3,18 +3,16 @@ use crate::data_structures::btree::{
     Key, Node,
 };
 
-impl Node {
-    pub fn insert(&mut self, k: Key) -> InsertionResult {
-        let result = self.search(k.key);
+impl<T: Key> Node<T> {
+    pub fn insert(&mut self, k: T) -> InsertionResult<T> {
+        let result = self.search(&k);
 
         if self.is_leaf {
             return self.try_insert(k);
         }
 
         if let SearchResult::GoDown(i) = result {
-            let child = self.children[i].insert(k);
-
-            if let InsertionResult::AddToFater(middle_key, new_node) = child {
+            if let InsertionResult::AddToFater(middle_key, new_node) = self.children[i].insert(k) {
                 self.children.insert(i + 1, new_node);
                 self.children.sort();
 
@@ -30,7 +28,7 @@ impl Node {
         InsertionResult::Inserted
     }
 
-    fn try_insert(&mut self, k: Key) -> InsertionResult {
+    fn try_insert(&mut self, k: T) -> InsertionResult<T> {
         self.keys.push(k);
         self.keys.sort();
 
@@ -40,9 +38,8 @@ impl Node {
         }
     }
 
-    fn split_node(&mut self) -> InsertionResult {
-        let t = self.grade as usize;
-        let mid = t;
+    fn split_node(&mut self) -> InsertionResult<T> {
+        let mid = self.grade;
 
         let mut right_node = Node::new(self.is_leaf, self.grade);
 

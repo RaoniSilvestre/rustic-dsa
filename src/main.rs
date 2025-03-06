@@ -1,35 +1,35 @@
-use rustic_dsa::data_structures::btree::{BTree, Key};
+use rustic_dsa::data_structures::btree::BTree;
 
 fn main() {
     let mut tree = BTree::new(2);
 
-    let k1 = Key::new_from_key(10);
-    let k2 = Key::new_from_key(20);
-    let k3 = Key::new_from_key(30);
-    let k4 = Key::new_from_key(40);
-    let k5 = Key::new_from_key(50);
-    let k6 = Key::new_from_key(60);
-    let k7 = Key::new_from_key(70);
-    let k8 = Key::new_from_key(80);
+    let k1 = 10;
+    let k2 = 20;
+    let k3 = 30;
+    let k4 = 40;
+    let k5 = 50;
+    let k6 = 60;
+    let k7 = 70;
+    let k8 = 80;
 
-    tree.insert(k1.clone());
-    tree.insert(k2.clone());
-    tree.insert(k3.clone());
-    tree.insert(k4.clone());
-    tree.insert(k5.clone());
-    tree.insert(k6.clone());
-    tree.insert(k7.clone());
-    tree.insert(k8.clone());
+    tree.insert(k1);
+    tree.insert(k2);
+    tree.insert(k3);
+    tree.insert(k4);
+    tree.insert(k5);
+    tree.insert(k6);
+    tree.insert(k7);
+    tree.insert(k8);
 
     println!("\nInitial tree: \n{}", tree);
-    tree.remove(50);
-    println!("\nRemove {}\n{}", 50, tree);
-    tree.remove(60);
-    println!("\nRemove {}\n{}", 60, tree);
-    tree.remove(70);
-    println!("\nRemove {}\n{}", 70, tree);
-    tree.remove(80);
-    println!("\nRemove {}\n{}", 80, tree);
-    tree.remove(30);
-    println!("\nRemove {}\n{}", 30, tree);
+    tree.remove(k5);
+    println!("\nRemove {}\n{}", k5, tree);
+    tree.remove(k6);
+    println!("\nRemove {}\n{}", k6, tree);
+    tree.remove(k7);
+    println!("\nRemove {}\n{}", k7, tree);
+    tree.remove(k8);
+    println!("\nRemove {}\n{}", k8, tree);
+    tree.remove(k3);
+    println!("\nRemove {}\n{}", k3, tree);
 }
