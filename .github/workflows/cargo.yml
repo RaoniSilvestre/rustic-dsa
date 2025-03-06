@@ -37,5 +37,5 @@ jobs:
         run: cargo build --verbose
 
       # Rodar os testes
-      - name: Test
-        run: cargo test --verbose
+      - name: Test and coverage
+        run: cargo tarpaulin --verbose
