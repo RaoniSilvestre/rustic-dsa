@@ -66,7 +66,7 @@ impl<T: Key> Node<T> {
     }
 
     fn is_full(&self) -> bool {
-        self.keys.len() == (2 * self.grade + 1)
+        self.keys.len() == 2 * self.grade + 1
     }
 
     fn last_key(&mut self) -> T {

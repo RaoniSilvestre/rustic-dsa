@@ -75,11 +75,11 @@ mod tests {
         let k4 = 40;
         let k5 = 50;
 
-        tree.insert(k1.clone());
-        tree.insert(k2.clone());
-        tree.insert(k3.clone());
-        tree.insert(k4.clone());
-        tree.insert(k5.clone());
+        tree.insert(k1);
+        tree.insert(k2);
+        tree.insert(k3);
+        tree.insert(k4);
+        tree.insert(k5);
 
         tree.remove(40);
         tree.remove(50); // Pode causar fusão dos nós
