@@ -1,11 +1,11 @@
-use std::fmt;
+use std::fmt::{self, Display};
 
 use super::{BTree, Key, Node};
 
-impl fmt::Display for BTree {
+impl<T: Display + Key> fmt::Display for BTree<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fn display_node(
-            node: &Node,
+        fn display_node<T: Key + Display>(
+            node: &Node<T>,
             f: &mut fmt::Formatter<'_>,
             level: usize,
             child_number: usize,
@@ -16,7 +16,7 @@ impl fmt::Display for BTree {
 
             writeln!(f, "Nó {}: {}", child_number, node)?;
 
-            for (i, child) in node.children.iter().enumerate() {
+            for (i, child) in node.children().iter().enumerate() {
                 display_node(child, f, level + 1, i + 1)?;
             }
 
@@ -30,25 +30,15 @@ impl fmt::Display for BTree {
     }
 }
 
-impl fmt::Display for Node {
+impl<T: Display + Key> fmt::Display for Node<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "[")?;
-        for (i, key) in self.keys.iter().enumerate() {
+        for (i, key) in self.keys().iter().enumerate() {
             if i > 0 {
                 write!(f, ", ")?;
             }
-            write!(f, "{}", key.key)?;
+            write!(f, "{}", key)?;
         }
         write!(f, "]")
-    }
-}
-
-impl fmt::Display for Key {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "{}: {} ({} unidades)",
-            self.key, self.nome, self.quantidade
-        )
     }
 }

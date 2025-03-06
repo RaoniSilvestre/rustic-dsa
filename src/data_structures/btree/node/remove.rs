@@ -3,20 +3,40 @@ use crate::data_structures::btree::{
     Key, Node,
 };
 
-impl Node {
-    pub fn remove(&mut self, k: i32) -> RemovalResult {
-        match (self.search(k), self.is_leaf) {
+impl<T: Key> Node<T> {
+    pub fn remove(&mut self, k: T) -> RemovalResult {
+        match (self.search(&k), self.is_leaf) {
             (SearchResult::GoDown(_), true) => RemovalResult::RemoveCompleted,
             (SearchResult::GoDown(i), false) => self.remove_on_child(k, i),
-            (SearchResult::Find(i), false) => self.remove_branch(i),
-            (SearchResult::Find(i), true) => self.remove_leaf(i),
+            (SearchResult::Find(i), false) => self.remove_on_branch(i),
+            (SearchResult::Find(i), true) => self.remove_on_leaf(i),
         }
     }
 
-    fn remove_on_child(&mut self, k: i32, i: usize) -> RemovalResult {
+    fn remove_on_child(&mut self, k: T, i: usize) -> RemovalResult {
         match self.children[i].remove(k) {
             RemovalResult::InsuficientChildren => self.handle_underflow(i),
             RemovalResult::RemoveCompleted => RemovalResult::RemoveCompleted,
+        }
+    }
+
+    fn remove_on_leaf(&mut self, i: usize) -> RemovalResult {
+        self.keys.remove(i);
+
+        match self.keys.len() >= self.grade {
+            true => RemovalResult::RemoveCompleted,
+            false => RemovalResult::InsuficientChildren,
+        }
+    }
+
+    fn remove_on_branch(&mut self, i: usize) -> RemovalResult {
+        self.keys[i] = self.pop_rightmost_left();
+
+        let predecessor = self.get_predecessor(i);
+
+        match self.children[i].remove(predecessor) {
+            RemovalResult::InsuficientChildren => self.handle_underflow(i),
+            completed => completed,
         }
     }
 
@@ -24,12 +44,12 @@ impl Node {
         let has_left = i > 0;
         let has_right = i < self.children.len() - 1;
 
-        if has_left && self.children[i - 1].can_lend() {
+        if has_left && self.children[i - 1].can_borrow() {
             self.borrow_from_left(i);
             return RemovalResult::RemoveCompleted;
         }
 
-        if has_right && self.children[i + 1].can_lend() {
+        if has_right && self.children[i + 1].can_borrow() {
             self.borrow_from_right(i);
             return RemovalResult::RemoveCompleted;
         }
@@ -37,11 +57,10 @@ impl Node {
         match (has_left, has_right) {
             (true, _) => self.merge_children(i - 1),
             (_, true) => self.merge_children(i),
-            // É raiz!
             (false, false) => return RemovalResult::RemoveCompleted,
         }
 
-        match self.keys.len() >= (self.grade - 1) as usize {
+        match self.keys.len() > self.grade {
             true => RemovalResult::RemoveCompleted,
             false => RemovalResult::InsuficientChildren,
         }
@@ -84,17 +103,17 @@ impl Node {
     }
 
     fn borrow_from_right(&mut self, i: usize) {
-        let right_idx = i + 1;
-        let right_child = &mut self.children[right_idx];
+        let right_child = &mut self.children[i + 1];
+
         let borrowed_key = right_child.keys.remove(0);
-        let borrowed_child = if !right_child.is_leaf {
-            Some(right_child.children.remove(0))
-        } else {
-            None
+        let borrowed_child = match right_child.is_leaf {
+            true => None,
+            false => Some(right_child.children.remove(0)),
         };
 
+        // Key in between right and left child
         let parent_key = self.keys[i].clone();
-        self.keys[i] = borrowed_key.clone();
+        self.keys[i] = borrowed_key;
 
         let target_child = &mut self.children[i];
         target_child.keys.push(parent_key);
@@ -103,37 +122,17 @@ impl Node {
         }
     }
 
-    fn remove_leaf(&mut self, i: usize) -> RemovalResult {
-        self.keys.remove(i);
-
-        match self.keys.len() >= self.grade as usize {
-            true => RemovalResult::RemoveCompleted,
-            false => RemovalResult::InsuficientChildren,
-        }
-    }
-
-    fn remove_branch(&mut self, i: usize) -> RemovalResult {
-        self.keys[i] = self.pop_rightmost_left();
-
-        let predecessor = self.get_predecessor(i);
-
-        match self.children[i].remove(predecessor) {
-            RemovalResult::InsuficientChildren => self.handle_underflow(i),
-            completed => completed,
-        }
-    }
-
-    fn get_predecessor(&mut self, i: usize) -> i32 {
+    fn get_predecessor(&mut self, i: usize) -> T {
         let mut node = &mut self.children[i];
 
         while !node.is_leaf {
             node = node.last_child();
         }
 
-        (node.keys.last().unwrap()).key
+        node.keys.pop().unwrap()
     }
 
-    fn pop_rightmost_left(&mut self) -> Key {
+    fn pop_rightmost_left(&mut self) -> T {
         let left_node = self
             .child_mut(0)
             .expect("Left node inexistente na função pop_rightmost_left");
@@ -141,7 +140,7 @@ impl Node {
         left_node.pop_rightmost()
     }
 
-    fn pop_rightmost(&mut self) -> Key {
+    fn pop_rightmost(&mut self) -> T {
         match self.is_leaf {
             true => self.last_key(),
             false => self.last_child().pop_rightmost(),

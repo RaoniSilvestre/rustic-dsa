@@ -1,22 +1,22 @@
 #[cfg(test)]
 mod tests {
-    use rustic_dsa::data_structures::btree::{BTree, Key};
+    use rustic_dsa::data_structures::btree::BTree;
 
     #[test]
     fn test_insert_and_find() {
         let mut tree = BTree::new(2);
 
-        let k1 = Key::new_from_key(10);
-        let k2 = Key::new_from_key(20);
-        let k3 = Key::new_from_key(5);
-        let k4 = Key::new_from_key(6);
-        let k5 = Key::new_from_key(15);
+        let k1 = 10;
+        let k2 = 20;
+        let k3 = 5;
+        let k4 = 6;
+        let k5 = 15;
 
-        tree.insert(k1.clone());
-        tree.insert(k2.clone());
-        tree.insert(k3.clone());
-        tree.insert(k4.clone());
-        tree.insert(k5.clone());
+        tree.insert(k1);
+        tree.insert(k2);
+        tree.insert(k3);
+        tree.insert(k4);
+        tree.insert(k5);
 
         assert_eq!(tree.find(10), Some(k1));
         assert_eq!(tree.find(15), Some(k5));
@@ -28,9 +28,9 @@ mod tests {
     fn test_remove_leaf_without_underflow() {
         let mut tree = BTree::new(2);
 
-        let k1 = Key::new_from_key(10);
-        let k2 = Key::new_from_key(20);
-        let k3 = Key::new_from_key(30);
+        let k1 = 10;
+        let k2 = 20;
+        let k3 = 30;
 
         tree.insert(k1.clone());
         tree.insert(k2.clone());
@@ -47,15 +47,15 @@ mod tests {
     fn test_remove_leaf_with_underflow_and_borrow() {
         let mut tree = BTree::new(2);
 
-        let k1 = Key::new_from_key(10);
-        let k2 = Key::new_from_key(20);
-        let k3 = Key::new_from_key(30);
-        let k4 = Key::new_from_key(40);
+        let k1 = 10;
+        let k2 = 20;
+        let k3 = 30;
+        let k4 = 40;
 
-        tree.insert(k1.clone());
-        tree.insert(k2.clone());
-        tree.insert(k3.clone());
-        tree.insert(k4.clone());
+        tree.insert(k1);
+        tree.insert(k2);
+        tree.insert(k3);
+        tree.insert(k4);
 
         tree.remove(30); // Agora a folha pode precisar emprestar do irmão
 
@@ -69,11 +69,11 @@ mod tests {
     fn test_remove_leaf_with_fusion() {
         let mut tree = BTree::new(2);
 
-        let k1 = Key::new_from_key(10);
-        let k2 = Key::new_from_key(20);
-        let k3 = Key::new_from_key(30);
-        let k4 = Key::new_from_key(40);
-        let k5 = Key::new_from_key(50);
+        let k1 = 10;
+        let k2 = 20;
+        let k3 = 30;
+        let k4 = 40;
+        let k5 = 50;
 
         tree.insert(k1.clone());
         tree.insert(k2.clone());
@@ -95,19 +95,19 @@ mod tests {
     fn test_remove_internal_node() {
         let mut tree = BTree::new(2);
 
-        let k1 = Key::new_from_key(10);
-        let k2 = Key::new_from_key(20);
-        let k3 = Key::new_from_key(30);
-        let k4 = Key::new_from_key(40);
-        let k5 = Key::new_from_key(50);
-        let k6 = Key::new_from_key(60);
+        let k1 = 10;
+        let k2 = 20;
+        let k3 = 30;
+        let k4 = 40;
+        let k5 = 50;
+        let k6 = 60;
 
-        tree.insert(k1.clone());
-        tree.insert(k2.clone());
-        tree.insert(k3.clone());
-        tree.insert(k4.clone());
-        tree.insert(k5.clone());
-        tree.insert(k6.clone());
+        tree.insert(k1);
+        tree.insert(k2);
+        tree.insert(k3);
+        tree.insert(k4);
+        tree.insert(k5);
+        tree.insert(k6);
 
         tree.remove(30); // Remove um nó interno e precisa substituir pelo predecessor ou sucessor
 
@@ -119,23 +119,23 @@ mod tests {
     fn test_remove_root_replacement() {
         let mut tree = BTree::new(2);
 
-        let k1 = Key::new_from_key(10);
-        let k2 = Key::new_from_key(20);
-        let k3 = Key::new_from_key(30);
-        let k4 = Key::new_from_key(40);
-        let k5 = Key::new_from_key(50);
-        let k6 = Key::new_from_key(60);
-        let k7 = Key::new_from_key(70);
-        let k8 = Key::new_from_key(80);
+        let k1 = 10;
+        let k2 = 20;
+        let k3 = 30;
+        let k4 = 40;
+        let k5 = 50;
+        let k6 = 60;
+        let k7 = 70;
+        let k8 = 80;
 
-        tree.insert(k1.clone());
-        tree.insert(k2.clone());
-        tree.insert(k3.clone());
-        tree.insert(k4.clone());
-        tree.insert(k5.clone());
-        tree.insert(k6.clone());
-        tree.insert(k7.clone());
-        tree.insert(k8.clone());
+        tree.insert(k1);
+        tree.insert(k2);
+        tree.insert(k3);
+        tree.insert(k4);
+        tree.insert(k5);
+        tree.insert(k6);
+        tree.insert(k7);
+        tree.insert(k8);
 
         tree.remove(50);
         tree.remove(60);
