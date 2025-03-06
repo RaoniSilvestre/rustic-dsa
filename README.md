@@ -18,15 +18,12 @@ funcionam e como implementá-los.
   - Heap
   - Fila
   - Pilha
+  - BTreeSet
 
 ## Implementações em progresso
 
 - Árvore AVL
-- Árvore Rubro-negra (Deus me ajude!)
-
-## Tecnologias utilizadas
-
-rust.
+- BTreeMap
 
 ## Como usar
 
@@ -49,6 +46,7 @@ das estruturas implementadas, então para rodar o projeto
 
 ```bash
 cargo test
+cargo run
 ```
 
 Todos os testes estão localizados na pasta `tests/`.
